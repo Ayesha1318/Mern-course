@@ -7,12 +7,11 @@
         <main class="container mx-auto bg-white shadow-lg rounded-lg p-8 mt-10 max-w-6xl">
           <h2 class="text-2xl text-red-500 font-bold text-center mb-6">Here are list of favourite:</h2>
           <div class="flex flex-wrap justify-center gap-6">
-            <% registeredHouses.forEach(home=> { %>
+            <% favouriteHomes.forEach(home=> { %>
 
               <div
-                class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300 w-full max-w-sm">
-                <img class="w-full h-25 object-cover rounded-md" src="<%=home.photo%>" alt="<%=home.photo%>"
-                  class="w-full h-48 object-cover">
+               class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300 w-full max-w-sm">
+                <img class="w-full h-56 object-cover rounded-md" src="<%=home.photo%>" alt="<%=home.photo%>">
 
 
                 <div class="p-4">
@@ -36,9 +35,13 @@
                         <%= home.rating %>
                       </span>
                     </div>
+                   
                   </div>
-                  <button class="bg-red-500 text-white px-4 py-2 rounded-md  ml-36 hover:bg-red-400 transition duration-300">Book</button>
+                   <form action="/favourites/delete/<%= home.id%>" method="POST">
+                 <button type="submit" class="bg-red-500 mb-2 px-4 py-2 rounded-md text-white hover:bg-red-300 transition duration-300">Remove from Favourite</button>
+                </form>
                 </div>
+                
               </div>
 
               <% }) %>
