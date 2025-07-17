@@ -1,0 +1,59 @@
+<%- include('../partials/head') %>
+</head>
+<body>
+<%- include('../partials/nav') %>
+
+<main class="container mx-auto mt-10 px-4">
+  <h2 class="text-4xl text-red-600 font-extrabold text-center mb-10 tracking-wide">
+    Details of <%= home.name %>
+  </h2>
+
+  <div class="bg-white shadow-xl rounded-2xl p-8 max-w-4xl mx-auto flex flex-col md:flex-row gap-10 items-start">
+    
+    <!-- Left: Image -->
+    <div class="flex-shrink-0">
+      <img src="<%= home.photo %>" alt="<%= home.name %>"
+           class="w-60 h-52 object-cover rounded-lg shadow-md border mt-10">
+    </div>
+
+    <!-- Right: Details -->
+    <div class="flex-1 space-y-6">
+      
+      <!-- Description -->
+      <div class="border-b pb-2">
+        <h3 class="text-xl font-semibold text-gray-800 mb-1">Description</h3>
+        <p class="text-gray-600"><%= home.description %></p>
+      </div>
+
+      <!-- Location -->
+      <div class="border-b pb-2">
+        <h3 class="text-xl font-semibold text-gray-800 mb-1">Location</h3>
+        <p class="text-gray-600"><%= home.location %></p>
+      </div>
+
+      <!-- Price -->
+      <div class="border-b pb-2">
+        <h3 class="text-xl font-semibold text-gray-800 mb-1">Price</h3>
+        <p class="text-green-600 text-lg font-bold">$<%= home.price %> / night</p>
+      </div>
+
+      <!-- Rating -->
+      <div class="border-b pb-2">
+        <h3 class="text-xl font-semibold text-gray-800 mb-1">Rating</h3>
+        <div class="flex items-center space-x-2">
+          <span class="text-yellow-400 text-3xl">★</span>
+          <span class="text-lg font-medium"><%= home.rating %> / 5</span>
+        </div>
+      </div>
+
+      <!-- Favourite -->
+      <div class="border-b pb-2">
+        <%- include('../partials/favourite') %>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

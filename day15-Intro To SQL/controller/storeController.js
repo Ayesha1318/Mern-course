@@ -1,0 +1,81 @@
+const Favourite = require('../model/favourite');
+const Home = require('../model/homes');
+
+exports.getIndex=(req,res,next)=>{
+Home.fetchAll().then(([registeredHouses])=>{
+res.render('store/index', { 
+    registeredHouses,pageTitle:'Airbnb Home', currentPage:'index',
+   })
+});
+};
+exports.getHome=(req,res,next)=>{
+Home.fetchAll().then(([registeredHouses])=>{
+  res.render('store/home-list', { 
+    registeredHouses,pageTitle:'Homes List', currentPage:'home',
+   })
+});
+};
+
+exports.getFavouriteList = (req,res,next)=>{
+  Favourite.getFavourite(favourites =>{
+Home.fetchAll().then(([registeredHouses])=>{
+  const favouriteHomes = registeredHouses.filter(home =>
+      favourites.includes(home.id));
+      res.render('store/favourite-list', { 
+        favouriteHomes : favouriteHomes,
+    pageTitle:'My Favourites', currentPage:'favourites',
+   })
+  
+  });
+  })
+};
+
+exports.getBookings = (req,res,next)=>{
+Home.fetchAll().then(([registeredHouses])=>{
+res.render('store/bookings', { 
+    registeredHouses,pageTitle:'My Bookings', currentPage:'bookings',
+   })
+ 
+});
+};
+
+exports.postAddToFavourite = (req,res,next)=>{
+  console.log("Came to add to favoutite", req.body);
+  Favourite.addToFavourite(req.body.id, error=>{
+    if(error){
+      console.log("Error while marking favourite:",error)
+    }
+    res.redirect("/favourites");
+  })
+}
+
+exports.getHomeDetails=(req,res,next)=>{
+  const homeId = req.params.homeId;
+  console.log("At home page: ",homeId);
+  Home.findById(homeId).then(([homes]) => {
+    const home = homes[0];
+    if(!home){
+      console.log("home not found");
+      res.redirect("/home");
+    }
+    else{
+      res.render('store/home-detail', { 
+      home : home,
+      pageTitle:'Home Detail', 
+      currentPage:'Home',
+   })
+    }
+  })
+};
+ exports.postRemoveFavourite=(req,res,next)=>{
+    const homeId = req.params.homeId;
+     console.log("came to remove from favourites",homeId);
+    Favourite.delById(homeId,error=>{
+      if(error){
+        console.log("Error while remove from favourite", error)
+      }
+         res.redirect("/favourites");
+    })
+   
+  
+  }
