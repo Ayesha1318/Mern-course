@@ -4,9 +4,8 @@ const MongoClient = mongodb.MongoClient;
 
 let _db;
 
-const MONGO_URL = "mongodb+srv://root:root@mycluster.1dae8et.mongodb.net/?retryWrites=true&w=majority&appName=MyCluster";
 const mongoConnect = (callback) =>{
-  MongoClient.connect(MONGO_URL).then(client =>{
+  MongoClient.connect(process.env.MONGO_URL).then(client =>{
     callback ();
     _db = client.db('airbnb')
   }).catch(err=>{

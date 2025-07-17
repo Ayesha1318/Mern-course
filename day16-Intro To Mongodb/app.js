@@ -3,6 +3,7 @@ const path = require('path');
 //External Module
 const express = require('express');
 const app = express();
+require('dotenv').config();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
