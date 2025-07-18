@@ -1,0 +1,73 @@
+//core module
+const path = require('path');
+//External Module
+const express = require('express');
+const app = express();
+require('dotenv').config();
+const mongoose = require('mongoose')
+const session = require ('express-session')
+const mongoDBStore = require('connect-mongodb-session')(session);
+const DB_PATH =process.env.MONGO_URL;
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+app.set('view engine','ejs');
+app.set('views','views');
+
+const storeRouter = require('./routes/storeRouter');
+
+const hostRouter = require('./routes/hostRouter');
+
+const authRouter = require('./routes/authRouter');
+
+const rootDir = require('./utils/pathUtil');
+const errorController = require('./controller/error');
+
+const store = new mongoDBStore({
+  uri : DB_PATH,
+  collection : 'session'
+})
+
+app.use(session({
+  secret: 'abcd42',
+  resave: false,
+  saveUninitialized: true,
+  store : store,
+}))
+app.use((req,res,next)=>{
+  req.isLoggedIn = req.session.isLoggedIn;
+  next();
+})
+
+app.use(storeRouter);
+app.use("/host",(req,res,next)=>{
+  if(!req.session.isLoggedIn){
+    res.redirect('/login')
+  }
+  else{
+  next();
+  }
+});
+
+app.use(authRouter);
+
+app.use(express.urlencoded({extended:true}));
+
+app.use("/host",hostRouter);
+app.use(express.static(path.join(rootDir,'public')));
+app.use(errorController.get404);
+
+
+
+
+const PORT = 3000;
+ mongoose.connect(DB_PATH).then(() =>{
+   console.log("Connected to MongoDB");
+   app.listen(PORT,()=>{
+console.log(`Server is running on: http://localhost:${PORT}`);
+})
+  }).catch(err=>{
+    console.log("Error while connecting to Mongo", err);
+  });
+
